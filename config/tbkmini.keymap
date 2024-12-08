@@ -93,19 +93,19 @@ lower_layer {
                 };
                 
                 raise_layer {
-// .----------------------------------------------------------------.       .-----------------------------------------------------------------.
-// |CTRL+CMD+SHIFT+4|       |   PU   |   UP   |    PD    |   HOME   |       |  HOME   |    PU    |    UP   |   PD    |          | CMD+SHIFT+4 |
-// |----------------+-------+--------+--------+----------+----------|       |---------+----------+---------+---------+----------+-------------|
-// |                |       |  LEFT  |  DOWN  |   RIGHT  |   END    |       |  END    |   LEFT   |   DOWN  |  RIGHT  |          |             |
-// |----------------+-------+--------+--------+----------+----------|       |---------+----------+---------+---------+----------+-------------|
-// |     GUI        |       |        |        |CTRL+LEFT |CTRL+RIGHT|       |CTRL+LEFT|CTRL+RIGHT|         |         |          |   OUT_TOG   |
-// '---------------------------------+--------+----------+----------+       |---------+----------+---------+----------------------------------'
-//                                   |  SHIFT |   MO3    |          |       |         |          |         |
-//                                   '--------+----------+----------'       '---------+----------+---------'
+// .-----------------------------------------------------------------.       .-----------------------------------------------------------------.
+// |CTRL+CMD+SHIFT+4|SHIFT+F6|   PU   |   UP   |    PD    |   HOME   |       |  HOME   |    PU    |    UP   |   PD    |          | CMD+SHIFT+4 |
+// |----------------+--------+--------+--------+----------+----------|       |---------+----------+---------+---------+----------+-------------|
+// |   CTRL+TAB     |        |  LEFT  |  DOWN  |   RIGHT  |   END    |       |  END    |   LEFT   |   DOWN  |  RIGHT  |          |             |
+// |----------------+--------+--------+--------+----------+----------|       |---------+----------+---------+---------+----------+-------------|
+// |     GUI        |        |        |        |CTRL+LEFT |CTRL+RIGHT|       |CTRL+LEFT|CTRL+RIGHT|         |         |          |   OUT_TOG   |
+// '----------------------------------+--------+----------+----------+       |---------+----------+---------+----------------------------------'
+//                                    |  SHIFT |   MO3    |          |       |         |          |         |
+//                                    '--------+----------+----------'       '---------+----------+---------'
 
                         bindings = <
-   &kp LC(LG(LS(N4)))  &trans     &kp PAGE_UP        &kp UP_ARROW      &kp PAGE_DOWN       &kp HOME                &kp CARET            &kp PAGE_UP             &kp UP_ARROW       &kp PAGE_DOWN      &kp HOME     &kp LG(LS(N4))
-   &trans                 &trans     &kp LEFT_ARROW     &kp DOWN_ARROW    &kp RIGHT_ARROW     &kp END                 &kp MINUS            &kp LEFT_ARROW          &kp DOWN_ARROW     &kp RIGHT_ARROW    &kp END      &trans
+   &kp LC(LG(LS(N4))) LS(F6)     &kp PAGE_UP        &kp UP_ARROW      &kp PAGE_DOWN       &kp HOME                &kp HOME             &kp PAGE_UP             &kp UP_ARROW       &kp PAGE_DOWN      &trans       &kp LG(LS(N4))
+   &kp LC(TAB)        &trans     &kp LEFT_ARROW     &kp DOWN_ARROW    &kp RIGHT_ARROW     &kp END                 &kp END              &kp LEFT_ARROW          &kp DOWN_ARROW     &kp RIGHT_ARROW    &trans       &trans
    &kp LGUI           &trans     &trans             &trans            &kp LC(LEFT_ARROW)  &kp LC(RIGHT_ARROW)     &kp LC(LEFT_ARROW)   &kp LC(RIGHT_ARROW)     &trans             &trans             &trans       &out OUT_TOG
                                      &kp LSHFT           &mo ADJUST        &trans              &trans   &trans   &trans
                         >;
@@ -113,19 +113,19 @@ lower_layer {
 
                 adjust_layer {
 // .--------------------------------------------------------.       .--------------------------------------------------------------.
-// |         |        |        |        |         |         |       |  VOL+  |        |         |         |          |             |
-// |---------+--------+--------+--------+---------+---------|       |--------+--------+---------+---------+----------+-------------|
-// |  BTCLR  |  BT1   |  BT2   |  BT3   |  BT4    |  BT5    |       |  VOL-  |        |         |         |          |             |
-// |---------+--------+--------+--------+---------+---------|       |--------+--------+---------+---------+----------+-------------|
-// |         |        |        |        |         |         |       |        |        |         |         |          |             |
-// '---------------------------+--------+---------+---------+       |--------+--------+---------+----------------------------------'
-//                             |        |         |         |       |        |        |         |
-//                             '--------+---------+---------'       '--------+--------+---------'
+// |         |        |        |        |         |         |       |  VOL+  | PLAY/PAUSE |         |         |          |             |
+// |---------+--------+--------+--------+---------+---------|       |--------+------------+---------+---------+----------+-------------|
+// |  BTCLR  |  BT1   |  BT2   |  BT3   |  BT4    |  BT5    |       |  VOL-  |    NEXT    |         |         |          |             |
+// |---------+--------+--------+--------+---------+---------|       |--------+------------+---------+---------+----------+-------------|
+// |         |        |        |        |         |         |       |  MUTE  |  PREVIOUS  |         |         |          |             |
+// '---------------------------+--------+---------+---------+       |--------+------------+---------+----------------------------------'
+//                             |        |         |         |       |        |            |         |
+//                             '--------+---------+---------'       '--------+------------+---------'
 
                         bindings = <
-   &trans      &trans          &trans         &trans          &trans          &trans            &kp C_VOLUME_UP    &trans &trans &trans &trans &trans
-   &bt BT_CLR  &bt BT_SEL 0    &bt BT_SEL 1   &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4      &kp C_VOLUME_DOWN  &trans &trans &trans &trans &trans
-   &trans      &trans          &trans         &trans          &trans          &trans            &trans             &trans &trans &trans &trans &trans
+   &trans      &trans          &trans         &trans          &trans          &trans            &kp C_VOLUME_UP    &kp C_PLAY_PAUSE &trans &trans &trans &trans
+   &bt BT_CLR  &bt BT_SEL 0    &bt BT_SEL 1   &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4      &kp C_VOLUME_DOWN  &kp C_NEXT       &trans &trans &trans &trans
+   &trans      &trans          &trans         &trans          &trans          &trans            &kp C_MUTE         &kp C_PREVIOUS   &trans &trans &trans &trans
                                    &trans &trans &trans   &trans &trans &trans
                         >;
                 };
