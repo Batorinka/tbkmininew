@@ -93,21 +93,21 @@ lower_layer {
                 };
                 
                 raise_layer {
-// .-----------------------------------------------------------------.       .-----------------------------------------------------------------------.
-// |CTRL+CMD+SHIFT+4|        |   PU   |   UP   |    PD    |   HOME   |       |  HOME   |    PU    |       UP      |   PD    |          | CMD+SHIFT+4 |
-// |----------------+--------+--------+--------+----------+----------|       |---------+----------+---------------+---------+----------+-------------|
-// |   CTRL+TAB     |        |  LEFT  |  DOWN  |   RIGHT  |   END    |       |  END    |   LEFT   |      DOWN     |  RIGHT  |          |             |
-// |----------------+--------+--------+--------+----------+----------|       |---------+----------+---------------+---------+----------+-------------|
-// |     GUI        |        |        |        |CTRL+LEFT |CTRL+RIGHT|       |CTRL+LEFT|CTRL+RIGHT|   CTRL+RIGHT  |         |          |             |
-// '----------------------------------+--------+----------+----------+       |---------+----------+---------------+----------------------------------'
-//                                    |  SHIFT |   MO3    |          |       |SHIFT+F6 | ALT+CMD+`|ALT+CMD+SHIFT+`|
+// .-----------------------------------------------------------------.       .-------------------------------------------------------------------------.
+// |CTRL+CMD+SHIFT+4|        |   PU   |   UP   |    PD    |   HOME   |       |  HOME   |    PU    |       UP      |   PD    |          |  CMD+SHIFT+4  |
+// |----------------+--------+--------+--------+----------+----------|       |---------+----------+---------------+---------+----------+---------------|
+// |      TAB       |        |  LEFT  |  DOWN  |   RIGHT  |   END    |       |  END    |   LEFT   |      DOWN     |  RIGHT  |          |               |
+// |----------------+--------+--------+--------+----------+----------|       |---------+----------+---------------+---------+----------+---------------|
+// |     GUI        |        |        |        |CTRL+LEFT |CTRL+RIGHT|       |CTRL+LEFT|CTRL+RIGHT|   CTRL+RIGHT  |         |ALT+CMD+` |ALT+CMD+SHIFT+`|
+// '----------------------------------+--------+----------+----------+       |---------+----------+---------------+------------------------------------'
+//                                    |  SHIFT |   MO3    |          |       |SHIFT+F6 |    ALT   |    CTRL       |
 //                                    '--------+----------+----------'       '---------+----------+---------------'
 
                         bindings = <
-   &kp LC(LG(LS(N4))) &trans     &kp PAGE_UP        &kp UP_ARROW      &kp PAGE_DOWN       &kp HOME                &kp HOME             &kp PAGE_UP                &kp UP_ARROW       &kp PAGE_DOWN      &trans       &kp LG(LS(N4))
-   &kp LC(TAB)        &trans     &kp LEFT_ARROW     &kp DOWN_ARROW    &kp RIGHT_ARROW     &kp END                 &kp END              &kp LEFT_ARROW             &kp DOWN_ARROW     &kp RIGHT_ARROW    &trans       &trans
-   &kp LGUI           &trans     &trans             &trans            &kp LC(LEFT_ARROW)  &kp LC(RIGHT_ARROW)     &kp LC(LEFT_ARROW)   &kp LC(RIGHT_ARROW)        &kp LC(UP_ARROW)   &trans             &trans       &trans
-                                                    &kp LSHFT         &mo ADJUST          &trans                  &kp LS(F6)           &kp LA(LG(LS(GRAVE)))      &kp LA(LG(GRAVE))
+   &kp LC(LG(LS(N4))) &trans     &kp PAGE_UP        &kp UP_ARROW      &kp PAGE_DOWN       &kp HOME                &kp HOME             &kp PAGE_UP                &kp UP_ARROW       &kp PAGE_DOWN      &trans                      &kp LG(LS(N4))
+   &kp TAB            &trans     &kp LEFT_ARROW     &kp DOWN_ARROW    &kp RIGHT_ARROW     &kp END                 &kp END              &kp LEFT_ARROW             &kp DOWN_ARROW     &kp RIGHT_ARROW    &trans                      &trans
+   &kp LGUI           &trans     &trans             &trans            &kp LC(LEFT_ARROW)  &kp LC(RIGHT_ARROW)     &kp LC(LEFT_ARROW)   &kp LC(RIGHT_ARROW)        &kp LC(UP_ARROW)   &trans             &kp LA(LG(LS(GRAVE)))       &kp LA(LG(GRAVE))
+                                                    &kp LSHFT         &mo ADJUST          &trans                  &kp LS(F6)           &kp RALT                   &kp RCTRL
                         >;
                 };
 
