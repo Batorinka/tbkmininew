@@ -10,6 +10,7 @@
 #define NAVI 2
 #define ADJUST 3
 #define ZMK_POINTING_DEFAULT_MOVE_VAL 1500  // default: 600
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 20
 
 &lt {
   tapping-term-ms = <300>;
@@ -60,17 +61,17 @@
 // .--------------------------------------------------------------.       .------------------------------------------------------------.
 // |   ESC        |    Q    |    W   |   E    |    R    |    T    |       |   Y    |    U    |    I    |    O    |     P    |     [    |
 // |--------------+---------+--------+--------+---------+---------|       |--------+---------+---------+---------+----------+----------|
-// |   ALT        |    A    |    S   |   D    |    F    |    G    |       |   H    |    J    |    K    |    L    |     ;    |     '    |
+// |   ALT        |    A    |    S   |   D    | SHIFT/F |    G    |       |   H    | SHIFT/J |    K    |    L    |     ;    |     '    |
 // |--------------+---------+--------+--------+---------+---------|       |--------+---------+---------+---------+----------+----------|
 // |   CMD        |    Z    |    X   |   C    |    V    |    B    |       |   N    |    M    |    ,    |    .    |     /    |     ]    |
 // '---------------------------------+--------+---------+---------+       |--------+---------+---------+-------------------------------'
 //                                   |  CTRL  | SHFT/TAB| NAVI/ENT|       |NUMB/SPC|   BKSP  |   CAPS  |
 //                                   '--------+---------+---------'       '--------+---------+---------'
                         bindings = <
-   &kp ESC       &kp Q       &kp W      &kp E     &kp R           &kp T         &kp Y            &kp U      &kp I              &kp O     &kp P      &kp LBKT
-   &kp LALT      &kp A       &kp S      &kp D     &kp F           &kp G         &kp H            &kp J      &kp K              &kp L     &kp SEMI   &kp SQT
-   &kp LGUI      &kp Z       &kp X      &kp C     &kp V           &kp B         &kp N            &kp M      &kp COMMA          &kp DOT   &kp FSLH   &kp RBKT
-                                        &kp LCTRL &mt LSHFT TAB   &lt NAVI RET  &lt NUMB SPACE   &kp BSPC   &kp CAPSLOCK
+   &kp ESC       &kp Q       &kp W      &kp E     &kp R           &kp T         &kp Y            &kp U        &kp I              &kp O     &kp P      &kp LBKT
+   &kp LALT      &kp A       &kp S      &kp D     &mt LSHFT F     &kp G         &kp H            &mt RSHFT J  &kp K              &kp L     &kp SEMI   &kp SQT
+   &kp LGUI      &kp Z       &kp X      &kp C     &kp V           &kp B         &kp N            &kp M        &kp COMMA          &kp DOT   &kp FSLH   &kp RBKT
+                                        &kp LCTRL &mt LSHFT TAB   &lt NAVI RET  &lt NUMB SPACE   &kp BSPC     &kp CAPSLOCK
                         >;
                 };
 
@@ -94,19 +95,19 @@ lower_layer {
 
                 raise_layer {
 // .----------------------------------------------------------------.       .--------------------------------------------------------------------.
-// |   ESC   |SHFT+SHFT|        |   UP   |          |   ALT+CMD+`   |       |SHIFT+F6 |  M_RCLK  |  M_UP   | M_LCLK  |          |  CMD+SHIFT+4   |
+// |   ESC   |  SHIFT  |        |   UP   |          |   ALT+CMD+`   |       | SCRL_UP |  M_RCLK  |  M_UP   | M_LCLK  | SCRL_LEFT|  CMD+SHIFT+4   |
 // |---------+---------+--------+--------+----------+---------------|       |---------+----------+---------+---------+----------+----------------|
-// |   ALT   |ALT+SHIFT|  LEFT  |  DOWN  |   RIGHT  |ALT+CMD+SHIFT+`|       |         |  M_LEFT  | M_DOWN  | M_RIGHT |          |CTRL+CMD+SHIFT+4|
+// |   ALT   |ALT+SHIFT|  LEFT  |  DOWN  |   RIGHT  |ALT+CMD+SHIFT+`|       |SCRL_DOWN|  M_LEFT  | M_DOWN  | M_RIGHT |SCRL_RIGHT|CTRL+CMD+SHIFT+4|
 // |---------+---------+--------+--------+----------+---------------|       |---------+----------+---------+---------+----------+----------------|
-// |   CMD   |CMD+SHIFT|        |CTRL+UP |CTRL+LEFT |   CTRL+RIGHT  |       |         |          |         |         |          |                |
+// |   CMD   |CMD+SHIFT|        |CTRL+UP |CTRL+LEFT |   CTRL+RIGHT  |       |SHIFT+F6 |          |         |         |          |                |
 // '----------------------------+--------+----------+---------------+       |---------+----------+---------+-------------------------------------'
 //                              |  CTRL  | SHFT/TAB |               |       | ADJUST  |    BKSP  |   CAPS  |
 //                              '--------+----------+---------------'       '---------+----------+---------'
 
                         bindings = <
-   &trans    &kp LS(LSHFT)     &trans             &kp UP_ARROW      &trans              &kp LA(LG(GRAVE))       &kp LS(F6)   &mkp LCLK         &mmv MOVE_UP      &mkp RCLK          &trans       &kp LG(LS(N4))
-   &trans    &kp LA(LSHFT)     &kp LEFT_ARROW     &kp DOWN_ARROW    &kp RIGHT_ARROW     &kp LA(LG(LS(GRAVE)))   &trans       &mmv MOVE_LEFT    &mmv MOVE_DOWN    &mmv MOVE_RIGHT    &trans       &kp LC(LG(LS(N4)))
-   &trans    &kp LG(LSHFT)     &trans             &kp LC(UP_ARROW)  &kp LC(LEFT_ARROW)  &kp LC(RIGHT_ARROW)     &trans       &trans            &trans            &trans             &trans       &trans
+   &trans    &kp LSHFT         &trans             &kp UP_ARROW      &trans              &kp LA(LG(GRAVE))       SCRL_UP      &mkp LCLK         &mmv MOVE_UP      &mkp RCLK          SCRL_LEFT    &kp LG(LS(N4))
+   &trans    &kp LA(LSHFT)     &kp LEFT_ARROW     &kp DOWN_ARROW    &kp RIGHT_ARROW     &kp LA(LG(LS(GRAVE)))   SCRL_DOWN    &mmv MOVE_LEFT    &mmv MOVE_DOWN    &mmv MOVE_RIGHT    SCRL_RIGHT   &kp LC(LG(LS(N4)))
+   &trans    &kp LG(LSHFT)     &trans             &kp LC(UP_ARROW)  &kp LC(LEFT_ARROW)  &kp LC(RIGHT_ARROW)     &kp LS(F6)   &trans            &trans            &trans             &trans       &trans
                                                   &trans            &trans              &trans                  &mo ADJUST   &trans            &trans
                         >;
                 };
