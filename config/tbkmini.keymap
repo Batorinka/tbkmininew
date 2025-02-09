@@ -55,53 +55,53 @@
   combos {
       compatible = "zmk,combos";
 
-      ParaLeft {
-          bindings = <&kp LEFT_PARENTHESIS>;
+      MINUS {
+          bindings = <&kp KP_MINUS>;
           key-positions = <4 5>;
           timeout-ms = <20>;
       };
 
-      ParaRight {
-          bindings = <&kp RIGHT_PARENTHESIS>;
-          key-positions = <6 7>;
-          timeout-ms = <20>;
-      };
+//      ParaRight {
+//          bindings = <&kp RIGHT_PARENTHESIS>;
+//          key-positions = <6 7>;
+//          timeout-ms = <20>;
+//      };
 
-      BrakLeft {
-          bindings = <&kp LEFT_BRACKET>;
+      GREATER_THAN {
+          bindings = <&kp GT>;
           key-positions = <16 17>;
           timeout-ms = <20>;
       };
 
-      BrakRight {
-          bindings = <&kp RIGHT_BRACKET>;
-          key-positions = <18 19>;
-          timeout-ms = <20>;
-      };
+//      BrakRight {
+//          bindings = <&kp RIGHT_BRACKET>;
+//          key-positions = <18 19>;
+//          timeout-ms = <20>;
+//      };
 
-      BraceLeft {
-          bindings = <&kp LEFT_BRACE>;
+      EQUAL {
+          bindings = <&kp KP_EQUAL>;
           key-positions = <28 29>;
           timeout-ms = <20>;
       };
 
-      BraceRight {
-          bindings = <&kp RIGHT_BRACE>;
-          key-positions = <30 31>;
-          timeout-ms = <20>;
-      };
-
-      DoubleQuote {
-          bindings = <&kp DOUBLE_QUOTES>;
-          key-positions = <15 16>;
-          timeout-ms = <20>;
-      };
-
-      SingleQuote {
-          bindings = <&kp APOSTROPHE>;
-          key-positions = <19 20>;
-          timeout-ms = <20>;
-      };
+//      BraceRight {
+//          bindings = <&kp RIGHT_BRACE>;
+//          key-positions = <30 31>;
+//          timeout-ms = <20>;
+//      };
+//
+//      DoubleQuote {
+//          bindings = <&kp DOUBLE_QUOTES>;
+//          key-positions = <15 16>;
+//          timeout-ms = <20>;
+//      };
+//
+//      SingleQuote {
+//          bindings = <&kp APOSTROPHE>;
+//          key-positions = <19 20>;
+//          timeout-ms = <20>;
+//      };
 
       //LangRu {
       //    bindings = <&kp LG(F11)>;
@@ -127,41 +127,41 @@
       //    timeout-ms = <20>;
       //};
 
-      TildaSign {
-          bindings = <&kp TILDE>;
-          key-positions = <0 12>;
-          timeout-ms = <20>;
-      };
-
-      GraveSign {
-          bindings = <&kp GRAVE>;
-          key-positions = <12 24>;
-          timeout-ms = <20>;
-      };
-
-      MinusSign {
-          bindings = <&kp MINUS>;
-          key-positions = <3 4>;
-          timeout-ms = <20>;
-      };
-
-      PlusSign {
-          bindings = <&kp PLUS>;
-          key-positions = <2 3>;
-          timeout-ms = <20>;
-      };
-
-      UnderscoreSign {
-          bindings = <&kp UNDERSCORE>;
-          key-positions = <7 8>;
-          timeout-ms = <20>;
-      };
-
-      PipeSign {
-          bindings = <&kp PIPE>;
-          key-positions = <8 9>;
-          timeout-ms = <20>;
-      };
+//      TildaSign {
+//          bindings = <&kp TILDE>;
+//          key-positions = <0 12>;
+//          timeout-ms = <20>;
+//      };
+//
+//      GraveSign {
+//          bindings = <&kp GRAVE>;
+//          key-positions = <12 24>;
+//          timeout-ms = <20>;
+//      };
+//
+//      MinusSign {
+//          bindings = <&kp MINUS>;
+//          key-positions = <3 4>;
+//          timeout-ms = <20>;
+//      };
+//
+//      PlusSign {
+//          bindings = <&kp PLUS>;
+//          key-positions = <2 3>;
+//          timeout-ms = <20>;
+//      };
+//
+//      UnderscoreSign {
+//          bindings = <&kp UNDERSCORE>;
+//          key-positions = <7 8>;
+//          timeout-ms = <20>;
+//      };
+//
+//      PipeSign {
+//          bindings = <&kp PIPE>;
+//          key-positions = <8 9>;
+//          timeout-ms = <20>;
+//      };
   };
 
 
@@ -204,28 +204,28 @@
 //                  >;
 //                };
 // .--------------------------------------------------------------.       .-----------------------------------------------------------.
-// |   ESC        |   @/"   |   #/№  |    *   |    (    |    )    |       |   0   |    1    |    2    |    3    |     :    |    `     |
+// |   ESC        |   @/"   |   #/№  |    *   |    (    |    )    |       |   0   |    1    |    2    |    3    |    %/:   |    `     |
 // |--------------+---------+--------+--------+---------+---------|       |-------+---------+---------+---------+----------+----------|
-// |   ALT        |    !    |    =   |    +   |    {    |    }    |       |  ^/,  |    4    |    5    |    6    |     ;    |   %/:    |
+// |   ALT        |    !    |    =   |    +   |    {    |    }    |       |  ^/,  |    4    |    5    |    6    |    */;   |    ~     |
 // |--------------+---------+--------+--------+---------+---------|       |-------+---------+---------+---------+----------+----------|
-// |   CMD        |   $/%   |    _   |    -   |    [    |    ]    |       |  &/.  |    7    |    8    |    9    |    \/ё   |    |     |
+// |   CMD        |   $/%   |    _   |    -   |    [    |    ]    |       |  &/.  |    7    |    8    |    9    |    \/ё   |          |
 // '---------------------------------+--------+---------+---------+       |-------+---------+---------+-------------------------------'
 //                                   |  CTRL  | SHFT/TAB|  ADJUST |       |       |   BKSP  |   CAPS  |
 //                                   '--------+---------+---------'       '-------+---------+---------'
 lower_layer {
 // .--------------------------------------------------------------------------------------------------------.       .-------------------------------------------------------------------------------------------------------------.
-// |   ESC        |   @/"           |   #/№           |    *            |    (            |    )            |       |   0             |    1            |    2            |    3            |     :            |    `             |
+// |   ESC        |   @/"           |   #/№           |    *            |    (            |    )            |       |   0             |    1            |    2            |    3            |    %/:           |    `             |
 // |--------------+-----------------+-----------------+-----------------+-----------------+-----------------|       |-----------------+-----------------+-----------------+-----------------+------------------+------------------|
-// |   ALT        |    !            |    =            |    +            |    {            |    }            |       |  ^/,            |    4            |    5            |    6            |     ;            |   %/:            |
+// |   ALT        |    !            |    =            |    +            |    {            |    }            |       |  ^/,            |    4            |    5            |    6            |    */;           |    ~             |
 // |--------------+-----------------+-----------------+-----------------+-----------------+-----------------|       |-----------------+-----------------+-----------------+-----------------+------------------+------------------|
-// |   CMD        |   $/%           |    _            |    -            |    [            |    ]            |       |  &/.            |    7            |    8            |    9            |    \/ё           |    |             |
+// |   CMD        |   $/%           |    _            |    -            |    [            |    ]            |       |  &/.            |    7            |    8            |    9            |    \/ё           |                  |
 // '--------------------------------------------------+-----------------+-----------------+-----------------+       |-----------------+-----------------+-----------------+-------------------------------------------------------'
 //                                                    |  CTRL           | SHFT/TAB        |  ADJUST         |       |                 |   BKSP          |   CAPS          |
 //                                                    '-----------------+-----------------+-----------------'       '-----------------+-----------------+-----------------'
                         bindings = <
-      &trans       &kp AT            &kp HASH          &kp KP_MULTIPLY    &kp LPAR         &kp RPAR                  &kp N0            &kp N1            &kp N2            &kp N3            &kp COLON          &kp GRAVE
-      &trans       &kp EXCL          &kp KP_EQUAL      &kp KP_PLUS        &kp KP_SUBTRACT  &kp RIGHT_BRACE           &kp CARET         &kp N4            &kp N5            &kp N6            &kp SEMI           &kp PRCNT
-      &trans       &kp DLLR          &kp UNDERSCORE    &kp KP_SUBTRACT    &kp LEFT_BRACE   &kp LEFT_BRACKET          &kp AMPS          &kp N7            &kp N8            &kp N9            &kp BSLH           &kp PIPE2
+      &trans       &kp AT            &kp HASH          &kp KP_MULTIPLY    &kp LPAR         &kp RPAR                  &kp N0            &kp N1            &kp N2            &kp N3            &kp PRCNT          &kp GRAVE
+      &trans       &kp EXCL          &kp KP_EQUAL      &kp KP_PLUS        &kp LEFT_BRACE   &kp RIGHT_BRACE           &kp CARET         &kp N4            &kp N5            &kp N6            &kp ASTRK          &kp TILDE
+      &trans       &kp DLLR          &kp UNDERSCORE    &kp KP_SUBTRACT    &kp LEFT_BRACKET &kp RIGHT_BRACKET         &kp AMPS          &kp N7            &kp N8            &kp N9            &kp BSLH           &trans
                                                        &trans             &trans           &mo ADJUST                &trans            &trans            &trans
                         >;
                 };
