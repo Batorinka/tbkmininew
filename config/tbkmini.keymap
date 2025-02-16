@@ -72,6 +72,24 @@
           key-positions = <28 29>;
           timeout-ms = <20>;
       };
+
+      LeftShift {
+          bindings = <&kp LSHFT>;
+          key-positions = <15 16>;
+          timeout-ms = <20>;
+      };
+
+      RightShift {
+          bindings = <&kp RSHFT>;
+          key-positions = <19 20>;
+          timeout-ms = <20>;
+      };
+
+      CapsLock {
+          bindings = <&kp CAPSLOCK>;
+          key-positions = <6 7>;
+          timeout-ms = <20>;
+      };
   };
 
 
@@ -82,7 +100,7 @@
 // .--------------------------------------------------------------.       .------------------------------------------------------------.
 // |   ESC        |    Q    |    W   |   E    |    R    |    T    |       |   Y    |    U    |    I    |    O    |     P    |     [    |
 // |--------------+---------+--------+--------+---------+---------|       |--------+---------+---------+---------+----------+----------|
-// |   ALT        |    A    |    S   |   D    | SHIFT/F |    G    |       |   H    | SHIFT/J |    K    |    L    |     ;    |     '    |
+// |   ALT        |    A    |    S   |   D    |    F    |    G    |       |   H    |    J    |    K    |    L    |     ;    |     '    |
 // |--------------+---------+--------+--------+---------+---------|       |--------+---------+---------+---------+----------+----------|
 // |   CMD        |    Z    |    X   |   C    |    V    |    B    |       |   N    |    M    |    ,    |    .    |     /    |     ]    |
 // '---------------------------------+--------+---------+---------+       |--------+---------+---------+-------------------------------'
@@ -90,7 +108,7 @@
 //                                   '--------+---------+---------'       '--------+---------+---------'
                         bindings = <
    &kp ESC       &kp Q       &kp W      &kp E     &kp R           &kp T         &kp Y            &kp U        &kp I              &kp O     &kp P      &kp LBKT
-   &kp LALT      &kp A       &kp S      &kp D     &mt LSHFT F     &kp G         &kp H            &mt RSHFT J  &kp K              &kp L     &kp SEMI   &kp SQT
+   &kp LALT      &kp A       &kp S      &kp D     &kp F           &kp G         &kp H            &kp J        &kp K              &kp L     &kp SEMI   &kp SQT
    &kp LGUI      &kp Z       &kp X      &kp C     &kp V           &kp B         &kp N            &kp M        &kp COMMA          &kp DOT   &kp FSLH   &kp RBKT
                                         &kp LCTRL &mt LSHFT TAB   &lt NAVI RET  &lt NUMB SPACE   &kp BSPC     &kp CAPSLOCK
                         >;
