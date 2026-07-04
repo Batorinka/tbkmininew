@@ -1,20 +1,33 @@
 #include <behaviors.dtsi>
-#include <behaviors/mouse_keys.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/pointing.h>
 
-#define QWERTY 0
-#define NUMB 1
-#define NAVI 2
-#define ADJUST 3
-#define ZMK_POINTING_DEFAULT_MOVE_VAL 1500  // default: 600
-#define ZMK_POINTING_DEFAULT_SCRL_VAL 20
+// ─── Layer indices (MUST match order in keymap node) ─────────────
+// MAC sits below NUMB/NAVI/ADJUST so it overrides only the base
+// layer keys (corner + thumb1) and never shadows the other layers.
+#define QWERTY   0
+#define MAC      1
+#define NUMB     2
+#define NAVI     3
+#define ADJUST   4
+#define NAVI_MAC 5
+
+// ─── Key positions reference ─────────────────────────────────────
+//  0  1  2  3  4  5  │  6  7  8  9 10 11
+// 12 13 14 15 16 17  │ 18 19 20 21 22 23
+// 24 25 26 27 28 29  │ 30 31 32 33 34 35
+//          36 37 38  │ 39 40 41
 
 &lt {
   tapping-term-ms = <300>;
-  quick_tap_ms = <200>;
+  quick-tap-ms = <200>;
+  flavor = "hold-preferred";
+};
+
+&mt {
+  tapping-term-ms = <250>;
+  quick-tap-ms = <200>;
   flavor = "hold-preferred";
 };
 
@@ -23,177 +36,149 @@
     zmk,matrix_transform = &default_transform;
   };
 
-  behaviors {
-    hm: homerow_mods {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      tapping-term-ms = <150>;
-      quick_tap_ms = <150>;
-      flavor = "tap-preferred";
-      bindings = <&kp>, <&kp>;
+  macros {
+    // Selecting a BT profile also switches the OS mode: profile 0
+    // is the Ubuntu machine (base layer is Linux-native), profile 4
+    // is the mac (enables the MAC overlay). &to disables all other
+    // non-default layers, so the two modes can never stack.
+    bt_lnx: bt_lnx {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&bt BT_SEL 0>, <&to QWERTY>;
     };
-    lm: left_hand_positional_hold_tap {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "tap-unless-interrupted";
-      tapping-term-ms = <200>;
-      quick-tap-ms = <200>;
-      bindings = <&kp>, <&kp>;
-      hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29>;
-    };
-    rm: right_hand_positional_hold_tap {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "tap-unless-interrupted";
-      tapping-term-ms = <200>;
-      quick-tap-ms = <200>;
-      bindings = <&kp>, <&kp>;
-      hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24>;
+
+    bt_mac: bt_mac {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&bt BT_SEL 4>, <&to MAC>;
     };
   };
 
-  combos {
-      compatible = "zmk,combos";
+  // NAVI_MAC auto-activates when NAVI is held in mac mode and
+  // overrides the OS-specific text selection / window keys.
+  conditional_layers {
+    compatible = "zmk,conditional-layers";
 
-      Minus {
-          bindings = <&kp KP_MINUS>;
-          key-positions = <4 5>;
-          timeout-ms = <20>;
-      };
-
-      Gt {
-          bindings = <&kp GT>;
-          key-positions = <16 17>;
-          timeout-ms = <20>;
-      };
-
-      Equal {
-          bindings = <&kp KP_EQUAL>;
-          key-positions = <28 29>;
-          timeout-ms = <20>;
-      };
-
-      LeftShift {
-          bindings = <&kp LSHFT>;
-          key-positions = <15 16>;
-          timeout-ms = <20>;
-      };
-
-      RightShift {
-          bindings = <&kp RSHFT>;
-          key-positions = <19 20>;
-          timeout-ms = <20>;
-      };
-
-      CapsLock {
-          bindings = <&kp CAPSLOCK>;
-          key-positions = <6 7>;
-          timeout-ms = <20>;
-      };
+    navi_mac {
+      if-layers = <NAVI MAC>;
+      then-layer = <NAVI_MAC>;
+    };
   };
-
 
   keymap {
-        compatible = "zmk,keymap";
+    compatible = "zmk,keymap";
 
-                default_layer {
+    default_layer {
+// Linux-native base. Corner: hold Super, tap Tab. Thumb1: Ctrl.
+// (In mac mode the MAC overlay turns corner into Ctrl/Tab and
+// thumb1 into Cmd, so copy-paste stays on the same finger.)
 // .--------------------------------------------------------------.       .------------------------------------------------------------.
 // |   ESC        |    Q    |    W   |   E    |    R    |    T    |       |   Y    |    U    |    I    |    O    |     P    |     [    |
 // |--------------+---------+--------+--------+---------+---------|       |--------+---------+---------+---------+----------+----------|
 // |   ALT        |    A    |    S   |   D    |    F    |    G    |       |   H    |    J    |    K    |    L    |     ;    |     '    |
 // |--------------+---------+--------+--------+---------+---------|       |--------+---------+---------+---------+----------+----------|
-// |   CMD        |    Z    |    X   |   C    |    V    |    B    |       |   N    |    M    |    ,    |    .    |     /    |     ]    |
+// | SUPER/TAB    |    Z    |    X   |   C    |    V    |    B    |       |   N    |    M    |    ,    |    .    |     /    |     ]    |
 // '---------------------------------+--------+---------+---------+       |--------+---------+---------+-------------------------------'
-//                                   |  CTRL  | SHFT/TAB| NAVI/ENT|       |NUMB/SPC|   BKSP  |   CAPS  |
+//                                   |  CTRL  |  SHIFT  | NAVI/ENT|       |NUMB/SPC|   BKSP  |   CAPS  |
 //                                   '--------+---------+---------'       '--------+---------+---------'
-                        bindings = <
-   &kp ESC       &kp Q       &kp W      &kp E     &kp R           &kp T         &kp Y            &kp U        &kp I              &kp O     &kp P      &kp LBKT
-   &kp LALT      &kp A       &kp S      &kp D     &kp F           &kp G         &kp H            &kp J        &kp K              &kp L     &kp SEMI   &kp SQT
-   &kp LGUI      &kp Z       &kp X      &kp C     &kp V           &kp B         &kp N            &kp M        &kp COMMA          &kp DOT   &kp FSLH   &kp RBKT
-                                        &kp LCTRL &mt LSHFT TAB   &lt NAVI RET  &lt NUMB SPACE   &kp BSPC     &kp CAPSLOCK
-                        >;
-                };
+      bindings = <
+   &kp ESC       &kp Q       &kp W      &kp E     &kp R       &kp T         &kp Y            &kp U        &kp I              &kp O     &kp P      &kp LBKT
+   &kp LALT      &kp A       &kp S      &kp D     &kp F       &kp G         &kp H            &kp J        &kp K              &kp L     &kp SEMI   &kp SQT
+   &mt LGUI TAB  &kp Z       &kp X      &kp C     &kp V       &kp B         &kp N            &kp M        &kp COMMA          &kp DOT   &kp FSLH   &kp RBKT
+                                        &kp LCTRL &kp LSHFT   &lt NAVI RET  &lt NUMB SPACE   &kp BSPC     &kp CAPSLOCK
+      >;
+    };
 
-//lower_layer {
+    mac_layer {
+// Overlay enabled by bt_mac: corner -> Ctrl/Tab, thumb1 -> Cmd.
+      bindings = <
+   &trans        &trans      &trans     &trans    &trans      &trans        &trans           &trans       &trans             &trans    &trans     &trans
+   &trans        &trans      &trans     &trans    &trans      &trans        &trans           &trans       &trans             &trans    &trans     &trans
+   &mt LCTRL TAB &trans      &trans     &trans    &trans      &trans        &trans           &trans       &trans             &trans    &trans     &trans
+                                        &kp LGUI  &trans      &trans        &trans           &trans       &trans
+      >;
+    };
+
+    numb_layer {
+// KP_* codes keep - and = working in the Russian layout too.
 // .--------------------------------------------------------------.       .-----------------------------------------------------------.
-// |   ESC        |    1    |    2   |   3    |    4    |    5    |       |   6   |    7    |    8    |    9    |     0    |    `     |
+// |   ESC        |    @    |    #   |    *   |    (    |    )    |       |   0   |    1    |    2    |    3    |     %    |    `     |
 // |--------------+---------+--------+--------+---------+---------|       |-------+---------+---------+---------+----------+----------|
-// |   ALT        |    !    |    @   |   #    |    $    |    %    |       |   ^   |    &    |    *    |    (    |     )    |     :    |
+// |   ALT        |    !    |    =   |    +   |    {    |    }    |       |   ^   |    4    |    5    |    6    |     *    |    ~     |
 // |--------------+---------+--------+--------+---------+---------|       |-------+---------+---------+---------+----------+----------|
-// |   CMD        |         |    +   |   -    |    {    |    [    |       |   ]   |    }    |    =    |    _    |     \    |          |
+// | SUPER/TAB    |    $    |    _   |    -   |    [    |    ]    |       |   &   |    7    |    8    |    9    |     \    |          |
 // '---------------------------------+--------+---------+---------+       |-------+---------+---------+-------------------------------'
-//                                   |  CTRL  | SHFT/TAB|  ADJUST |       |       |   BKSP  |   CAPS  |
+//                                   |  CTRL  |  SHIFT  |  ADJUST |       |███████|   BKSP  |   CAPS  |
 //                                   '--------+---------+---------'       '-------+---------+---------'
-//                        bindings = <
-//   &trans     &kp N1       &kp N2        &kp N3           &kp N4          &kp N5            &kp N6             &kp N7          &kp N8           &kp N9          &kp N0     &kp GRAVE
-//   &trans     &kp EXCL     &kp AT        &kp HASH         &kp DLLR        &kp PRCNT         &kp CARET          &kp AMPS        &kp KP_MULTIPLY  &kp LPAR        &kp RPAR   &kp COLON
-//   &trans     &trans       &kp KP_PLUS   &kp KP_SUBTRACT  &kp LEFT_BRACE  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp RIGHT_BRACE &kp KP_EQUAL     &kp UNDERSCORE  &kp BSLH   &trans
-//                                         &trans           &trans          &mo ADJUST        &trans             &trans          &trans
-//                  >;
-//                };
-// .--------------------------------------------------------------.       .-----------------------------------------------------------.
-// |   ESC        |   @/"   |   #/№  |    *   |    (    |    )    |       |   0   |    1    |    2    |    3    |    %/:   |    `     |
-// |--------------+---------+--------+--------+---------+---------|       |-------+---------+---------+---------+----------+----------|
-// |   ALT        |    !    |    =   |    +   |    {    |    }    |       |  ^/,  |    4    |    5    |    6    |    */;   |    ~     |
-// |--------------+---------+--------+--------+---------+---------|       |-------+---------+---------+---------+----------+----------|
-// |   CMD        |   $/%   |    _   |    -   |    [    |    ]    |       |  &/.  |    7    |    8    |    9    |    \/ё   |          |
-// '---------------------------------+--------+---------+---------+       |-------+---------+---------+-------------------------------'
-//                                   |  CTRL  | SHFT/TAB|  ADJUST |       |       |   BKSP  |   CAPS  |
-//                                   '--------+---------+---------'       '-------+---------+---------'
-lower_layer {
-// .--------------------------------------------------------------------------------------------------------.       .-------------------------------------------------------------------------------------------------------------.
-// |   ESC        |   @/"           |   #/№           |    *            |    (            |    )            |       |   0             |    1            |    2            |    3            |    %/:           |    `             |
-// |--------------+-----------------+-----------------+-----------------+-----------------+-----------------|       |-----------------+-----------------+-----------------+-----------------+------------------+------------------|
-// |   ALT        |    !            |    =            |    +            |    {            |    }            |       |  ^/,            |    4            |    5            |    6            |    */;           |    ~             |
-// |--------------+-----------------+-----------------+-----------------+-----------------+-----------------|       |-----------------+-----------------+-----------------+-----------------+------------------+------------------|
-// |   CMD        |   $/%           |    _            |    -            |    [            |    ]            |       |  &/.            |    7            |    8            |    9            |    \/ё           |                  |
-// '--------------------------------------------------+-----------------+-----------------+-----------------+       |-----------------+-----------------+-----------------+-------------------------------------------------------'
-//                                                    |  CTRL           | SHFT/TAB        |  ADJUST         |       |                 |   BKSP          |   CAPS          |
-//                                                    '-----------------+-----------------+-----------------'       '-----------------+-----------------+-----------------'
-                        bindings = <
-      &trans       &kp AT            &kp HASH          &kp KP_MULTIPLY    &kp LPAR         &kp RPAR                  &kp N0            &kp N1            &kp N2            &kp N3            &kp PRCNT          &kp GRAVE
-      &trans       &kp EXCL          &kp KP_EQUAL      &kp KP_PLUS        &kp LEFT_BRACE   &kp RIGHT_BRACE           &kp CARET         &kp N4            &kp N5            &kp N6            &kp ASTRK          &kp TILDE
-      &trans       &kp DLLR          &kp UNDERSCORE    &kp KP_SUBTRACT    &kp LEFT_BRACKET &kp RIGHT_BRACKET         &kp AMPS          &kp N7            &kp N8            &kp N9            &kp BSLH           &trans
-                                                       &trans             &trans           &mo ADJUST                &trans            &trans            &trans
-                        >;
-                };
+      bindings = <
+   &trans       &kp AT            &kp HASH          &kp KP_MULTIPLY    &kp LPAR         &kp RPAR                  &kp N0            &kp N1            &kp N2            &kp N3            &kp PRCNT          &kp GRAVE
+   &trans       &kp EXCL          &kp KP_EQUAL      &kp KP_PLUS        &kp LEFT_BRACE   &kp RIGHT_BRACE           &kp CARET         &kp N4            &kp N5            &kp N6            &kp ASTRK          &kp TILDE
+   &trans       &kp DLLR          &kp UNDERSCORE    &kp KP_SUBTRACT    &kp LEFT_BRACKET &kp RIGHT_BRACKET         &kp AMPS          &kp N7            &kp N8            &kp N9            &kp BSLH           &trans
+                                                    &trans             &trans           &mo ADJUST                &trans            &trans            &trans
+      >;
+    };
 
-                raise_layer {
-// .----------------------------------------------------------------.       .--------------------------------------------------------------------.
-// |   ESC   |  SHIFT  |        |   UP   |          |   ALT+CMD+`   |       | SCRL_UP |  M_RCLK  |  M_UP   | M_LCLK  | SCRL_LEFT|  CMD+SHIFT+4   |
-// |---------+---------+--------+--------+----------+---------------|       |---------+----------+---------+---------+----------+----------------|
-// |   ALT   |ALT+SHIFT|  LEFT  |  DOWN  |   RIGHT  |ALT+CMD+SHIFT+`|       |SCRL_DOWN|  M_LEFT  | M_DOWN  | M_RIGHT |SCRL_RIGHT|CTRL+CMD+SHIFT+4|
-// |---------+---------+--------+--------+----------+---------------|       |---------+----------+---------+---------+----------+----------------|
-// |   CMD   |CMD+SHIFT|        |CTRL+UP |CTRL+LEFT |   CTRL+RIGHT  |       |SHIFT+F6 |          |         |         |          |                |
-// '----------------------------+--------+----------+---------------+       |---------+----------+---------+-------------------------------------'
-//                              |  CTRL  | SHFT/TAB |               |       | ADJUST  |    BKSP  |   CAPS  |
-//                              '--------+----------+---------------'       '---------+----------+---------'
+    navi_layer {
+// Linux-native. Left: arrows + workspace keys. Right: text
+// selection and line/word navigation (mac mode overrides these
+// via NAVI_MAC). NAVI+BKSP = Delete.
+//
+// Word jump (Ctrl+Left/Right) is intentionally absent on Linux:
+// those combos are bound to workspace switching in GNOME.
+// .-----------------------------------------------------------------.       .---------------------------------------------------------------.
+// |         |  SHIFT  |        |   UP   |          |     ALT+`      |       | SEL_BOL |  S+LEFT  |  S+UP   | S+RIGHT | SEL_EOL |    PrtSc    |
+// |---------+---------+--------+--------+----------+----------------|       |---------+----------+---------+---------+---------+-------------|
+// |         |CTL+SHIFT|  LEFT  |  DOWN  |   RIGHT  |  ALT+SHIFT+`   |       |  HOME   | SEL_W_LT | S+DOWN  | SEL_W_RT|   END   | SHIFT+PrtSc |
+// |---------+---------+--------+--------+----------+----------------|       |---------+----------+---------+---------+---------+-------------|
+// |         |         |        |CTRL+UP |CTRL+LEFT |   CTRL+RIGHT   |       |SHIFT+F6 |          |         |         |         |             |
+// '----------------------------+--------+----------+----------------+       |---------+----------+---------+-----------------------------------'
+//                              |  CTRL  |  SHIFT   |████████████████|       | ADJUST  |   DEL    |   CAPS  |
+//                              '--------+----------+----------------'       '---------+----------+---------'
+      bindings = <
+   &trans    &kp LSHFT         &trans             &kp UP            &trans              &kp LA(GRAVE)           &kp LS(HOME)      &kp LS(LEFT)      &kp LS(UP)        &kp LS(RIGHT)      &kp LS(END)       &kp PSCRN
+   &trans    &kp LC(LSHFT)     &kp LEFT           &kp DOWN          &kp RIGHT           &kp LA(LS(GRAVE))       &kp HOME          &kp LS(LC(LEFT))  &kp LS(DOWN)      &kp LS(LC(RIGHT))  &kp END           &kp LS(PSCRN)
+   &trans    &trans            &trans             &kp LC(UP)        &kp LC(LEFT)        &kp LC(RIGHT)           &kp LS(F6)        &trans            &trans            &trans             &trans            &trans
+                                                  &trans            &trans              &trans                  &mo ADJUST        &kp DEL           &trans
+      >;
+    };
 
-                        bindings = <
-   &trans    &kp LSHFT         &trans             &kp UP_ARROW      &trans              &kp LA(LG(GRAVE))       &msc SCRL_UP      &mkp LCLK         &mmv MOVE_UP      &mkp RCLK          &msc SCRL_LEFT    &kp LG(LS(N4))
-   &trans    &kp LA(LSHFT)     &kp LEFT_ARROW     &kp DOWN_ARROW    &kp RIGHT_ARROW     &kp LA(LG(LS(GRAVE)))   &msc SCRL_DOWN    &mmv MOVE_LEFT    &mmv MOVE_DOWN    &mmv MOVE_RIGHT    &msc SCRL_RIGHT   &kp LC(LG(LS(N4)))
-   &trans    &kp LG(LSHFT)     &trans             &kp LC(UP_ARROW)  &kp LC(LEFT_ARROW)  &kp LC(RIGHT_ARROW)     &kp LS(F6)        &trans            &trans            &trans             &trans            &trans
-                                                  &trans            &trans              &trans                  &mo ADJUST        &trans            &trans
-                        >;
-                };
-
-                adjust_layer {
+    adjust_layer {
+// Outer BT keys bind profile + OS mode together. RST/BOOT on both
+// halves: flashing without touching the physical reset button.
 // .--------------------------------------------------------.       .------------------------------------------------------------------.
-// |         |        |        |        |         |         |       |  VOL+  | PLAY/PAUSE |         |         |          |             |
+// |         |        |        |        |   RST   |  BOOT   |       |  VOL+  | PLAY/PAUSE |         |   RST   |   BOOT   |             |
 // |---------+--------+--------+--------+---------+---------|       |--------+------------+---------+---------+----------+-------------|
-// |  BTCLR  |  BT1   |  BT2   |  BT3   |  BT4    |  BT5    |       |  VOL-  |    NEXT    |         |         |          |             |
+// |  BTCLR  | BT1+LNX|  BT2   |  BT3   |  BT4    | BT5+MAC |       |  VOL-  |    NEXT    |         |         |          |             |
 // |---------+--------+--------+--------+---------+---------|       |--------+------------+---------+---------+----------+-------------|
 // | OUT_TOG |        |        |        |         |         |       |  MUTE  |  PREVIOUS  |         |         |          |             |
 // '---------------------------+--------+---------+---------+       |--------+------------+---------+----------------------------------'
 //                             |        |         |         |       |        |            |         |
 //                             '--------+---------+---------'       '--------+------------+---------'
-
-                        bindings = <
-   &trans           &trans          &trans         &trans          &trans          &trans            &kp C_VOLUME_UP    &kp C_PLAY_PAUSE &trans &trans &trans &trans
-   &bt BT_CLR       &bt BT_SEL 0    &bt BT_SEL 1   &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4      &kp C_VOLUME_DOWN  &kp C_NEXT       &trans &trans &trans &trans
-   &out OUT_TOG     &trans          &trans         &trans          &trans          &trans            &kp C_MUTE         &kp C_PREVIOUS   &trans &trans &trans &trans
-                                                   &trans &trans   &trans          &trans            &trans             &trans
-            >;
-        };
+      bindings = <
+   &trans           &trans          &trans         &trans          &sys_reset      &bootloader       &kp C_VOLUME_UP    &kp C_PLAY_PAUSE &trans &sys_reset &bootloader &trans
+   &bt BT_CLR       &bt_lnx         &bt BT_SEL 1   &bt BT_SEL 2    &bt BT_SEL 3    &bt_mac           &kp C_VOLUME_DOWN  &kp C_NEXT       &trans &trans     &trans      &trans
+   &out OUT_TOG     &trans          &trans         &trans          &trans          &trans            &kp C_MUTE         &kp C_PREVIOUS   &trans &trans     &trans      &trans
+                                                   &trans          &trans          &trans            &trans             &trans           &trans
+      >;
     };
+
+    navi_mac_layer {
+// Conditional (NAVI + MAC): mac flavors of the NAVI right side,
+// window cycling and screenshots. Everything &trans falls through
+// to the Linux-native NAVI layer.
+// .-----------------------------------------------------------------.       .-------------------------------------------------------------------------.
+// |         |         |        |        |          |   ALT+CMD+`    |       |SEL_BOL(S⌘←)|  S+LEFT |  S+UP  | S+RIGHT|SEL_EOL(S⌘→)|   CMD+SHIFT+4     |
+// |---------+---------+--------+--------+----------+----------------|       |------------+---------+--------+--------+------------+-------------------|
+// |         |ALT+SHIFT|        |        |          |ALT+CMD+SHIFT+` |       | HOME(⌘←)   |SEL_W(⇧⌥←)| S+DOWN|SEL_W(⇧⌥→)| END(⌘→)  |CTRL+CMD+SHIFT+4   |
+// |---------+---------+--------+--------+----------+----------------|       |------------+---------+--------+--------+------------+-------------------|
+// |         |CMD+SHIFT|        |        |          |                |       |            | WORD(⌥←)|        | WORD(⌥→)|           |                   |
+// '----------------------------+--------+----------+----------------+       |------------+---------+--------+---------------------------------------- '
+      bindings = <
+   &trans    &trans            &trans             &trans            &trans              &kp LA(LG(GRAVE))       &kp LS(LG(LEFT))  &trans            &trans            &trans             &kp LS(LG(RIGHT)) &kp LG(LS(N4))
+   &trans    &kp LA(LSHFT)     &trans             &trans            &trans              &kp LA(LG(LS(GRAVE)))   &kp LG(LEFT)      &kp LS(LA(LEFT))  &trans            &kp LS(LA(RIGHT))  &kp LG(RIGHT)     &kp LC(LG(LS(N4)))
+   &trans    &kp LG(LSHFT)     &trans             &trans            &trans              &trans                  &trans            &kp LA(LEFT)      &trans            &kp LA(RIGHT)      &trans            &trans
+                                                  &trans            &trans              &trans                  &trans            &trans            &trans
+      >;
+    };
+  };
 };
